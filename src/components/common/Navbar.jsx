@@ -4,8 +4,8 @@ import '../../styles/Store/Navbar.css'
 const navigationLinks = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/shop' },
-  { label: 'About Us', href: '/about-us' },
-  { label: 'Contact Us', href: '/contact-us' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact Us', href: '/contact' },
 ]
 
 function SearchIcon() {

@@ -1,12 +1,13 @@
-import HomePage from "./pages/HomePage";
-import "./App.css";
+import './App.css'
+import AppRouter from './router/AppRouter'
 
+/**
+ * App
+ * Single responsibility: mount the router.
+ * All layout and routing logic lives in AppRouter.
+ */
 function App() {
-  return (
-    <div className="app">
-      <HomePage />
-    </div>
-  );
+  return <AppRouter />
 }
 
-export default App;
+export default App
