@@ -50,9 +50,9 @@
 }
 
 .shop-header__subtitle {
-  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
+  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
   line-height: 1.65;
   color: var(--shop-ink-muted);
   margin: 0;
