@@ -1,0 +1,88 @@
+/* ═══════════════════════════════════════════════════════════════
+   ProductGrid.css  ·  src/styles/Store/ProductGrid.css
+   Grid wrapper + Load More button — used inside ShopPage
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Wrapper ────────────────────────────────────────────────────── */
+.product-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* ── Grid ───────────────────────────────────────────────────────── */
+.product-grid__items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* ── Empty state ────────────────────────────────────────────────── */
+.product-grid__empty {
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  color: #808080;
+  text-align: center;
+  padding: 48px 0;
+}
+
+/* ── Load More wrapper ──────────────────────────────────────────── */
+.product-grid__load-wrap {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 8px;
+}
+
+/* ── Load More button ───────────────────────────────────────────── */
+.product-grid__load-btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  border-radius: 32px;
+
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+  background-color: #2d2b30;
+
+  transition:
+    background-color 0.22s ease,
+    transform        0.15s ease;
+}
+
+.product-grid__load-btn:hover {
+  background-color: rgb(20, 18, 23);
+  transform: translateY(-1px);
+}
+
+.product-grid__load-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .product-grid__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 560px) {
+  .product-grid__items {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin-inline: auto;
+  }
+
+  .product-grid__load-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

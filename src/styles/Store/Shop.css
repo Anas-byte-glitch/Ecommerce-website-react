@@ -1,0 +1,167 @@
+/* ═══════════════════════════════════════════════════════════════
+   Shop.css  ·  src/styles/Store/Shop.css
+   Bellezza – Product list header & category filters
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Design tokens (mirror your variables.css) ──────────────────
+   Override here only if variables.css isn't imported globally.   */
+:root {
+  --shop-ink:        rgb(45, 43, 48);     /* token-8ea7163e */
+  --shop-ink-muted:  rgb(77, 77, 77);     /* token-79d537f1 */
+  --shop-border:     rgba(0, 0, 0, 0.10);
+  --shop-pill-font:  14px;
+  --shop-radius:     32px;
+}
+
+/* ── Page wrapper ───────────────────────────────────────────────── */
+.shop-page {
+  min-height: 100vh;
+}
+
+/* ── Section ────────────────────────────────────────────────────── */
+.shop-header {
+  padding: 72px 80px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── Title group ────────────────────────────────────────────────── */
+.shop-header__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 580px;
+
+  /* Fade + slide up on mount */
+  opacity: 0;
+  transform: translateY(18px);
+  animation: shop-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+}
+
+.shop-header__title {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: clamp(32px, 4.5vw, 52px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--shop-ink);
+  margin: 0;
+}
+
+.shop-header__subtitle {
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--shop-ink-muted);
+  margin: 0;
+  max-width: 460px;
+}
+
+/* ── Filter pills row ───────────────────────────────────────────── */
+.shop-header__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ── Single pill ────────────────────────────────────────────────── */
+.shop-header__pill {
+  /* Reset */
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 20px;
+  border-radius: var(--shop-radius);
+
+  /* Typography */
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+  font-size: var(--shop-pill-font);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+
+  /* Default state — outlined */
+  background-color: transparent;
+  color: var(--shop-ink);
+  box-shadow: inset 0 0 0 1px var(--shop-border);
+
+  /* Transitions */
+  transition:
+    background-color 0.22s ease,
+    color            0.22s ease,
+    box-shadow       0.22s ease,
+    transform        0.15s ease;
+
+  /* Staggered entry animation */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: shop-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.shop-header__pill:hover:not(.shop-header__pill--active) {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+}
+
+.shop-header__pill:active {
+  transform: scale(0.97);
+}
+
+/* ── Active pill (dark filled) ──────────────────────────────────── */
+.shop-header__pill--active {
+  background-color: var(--shop-ink);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px transparent;
+}
+
+.shop-header__pill--active:hover {
+  background-color: rgb(30, 28, 33);
+}
+
+/* ── Products area placeholder ──────────────────────────────────── */
+.shop-products {
+  padding: 0 80px 80px;
+}
+
+/* ── Keyframe ───────────────────────────────────────────────────── */
+@keyframes shop-fade-up {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .shop-header {
+    padding: 48px 32px 36px;
+  }
+  .shop-products {
+    padding: 0 32px 60px;
+  }
+}
+
+@media (max-width: 560px) {
+  .shop-header {
+    padding: 36px 20px 28px;
+    gap: 24px;
+  }
+  .shop-header__title {
+    font-size: 28px;
+  }
+  .shop-products {
+    padding: 0 20px 48px;
+  }
+  .shop-header__pill {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,142 @@
+/* ═══════════════════════════════════════════════════════════════
+   ProductCard.css  ·  src/styles/Store/ProductCard.css
+   Reusable product card — used in ShopPage, FeaturedProducts, etc.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Card shell ─────────────────────────────────────────────────── */
+.product-card {
+  position: relative;
+  display: block;
+  min-width: 0;
+  color: inherit;
+  background: #ffffff;
+  text-decoration: none;
+  border-radius: 16px;
+}
+
+/* ── Quick-view circle ──────────────────────────────────────────── */
+.product-card__quick-view {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  color: #ffffff;
+  background: #2d2b30;
+  border-radius: 38px;
+  opacity: 0;
+  transition: opacity 260ms ease;
+  pointer-events: none;
+}
+
+.product-card__quick-view svg {
+  display: block;
+  width: 25px;
+  height: 25px;
+  fill: currentColor;
+}
+
+/* ── Image container ────────────────────────────────────────────── */
+.product-card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1 / 1.24;
+  border-radius: 16px;
+  background: #f5ede4;
+}
+
+/* ── Images ─────────────────────────────────────────────────────── */
+.product-card__image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  object-position: center center;
+  transition:
+    opacity 320ms ease,
+    transform 420ms ease;
+}
+
+.product-card__image--main {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product-card__image--hover {
+  opacity: 0;
+  transform: scale(1.07);
+}
+
+/* ── Text details ───────────────────────────────────────────────── */
+.product-card__details {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 8px 0;
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+.product-card__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.product-card__name {
+  color: #2d2b30;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.42;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-card__category {
+  color: #808080;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+.product-card__price {
+  flex: 0 0 auto;
+  color: #4d4d4d;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.42;
+  white-space: nowrap;
+  padding-top: 2px;
+}
+
+/* ── Hover & focus states ───────────────────────────────────────── */
+.product-card:hover .product-card__quick-view,
+.product-card:focus-visible .product-card__quick-view {
+  opacity: 1;
+}
+
+.product-card:hover .product-card__image--main,
+.product-card:focus-visible .product-card__image--main {
+  opacity: 0;
+  transform: scale(1.04);
+}
+
+.product-card:hover .product-card__image--hover,
+.product-card:focus-visible .product-card__image--hover {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product-card:focus-visible {
+  outline: 2px solid #c1a792;
+  outline-offset: 8px;
+  border-radius: 16px;
+}
