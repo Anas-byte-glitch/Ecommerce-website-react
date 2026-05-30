@@ -1,16 +1,17 @@
-import AboutHero from '../components/About/AboutHero'
+import AboutHero        from '../components/About/AboutHero'
+import AboutMission     from '../components/About/AboutMission'
+import AboutIntegration from '../components/About/AboutIntegration'
+import SocialGallerySection from '../components/home/SocialGallerySection'
 
-/**
- * AboutPage
- * Each section lives in its own component under components/About/
- * with its own CSS under styles/About/
- */
 function AboutPage() {
   return (
     <div className="about-page">
       <AboutHero />
+      <AboutMission />
+      <AboutIntegration />
+      <SocialGallerySection />
 
-      {/* More sections will be added here as we build them */}
+      {/* More sections will be added here */}
     </div>
   )
 }
