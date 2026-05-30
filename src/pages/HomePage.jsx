@@ -4,6 +4,7 @@ import CategorySection from '../components/home/CategorySection'
 import FeaturedProducts from '../components/home/FeaturedProducts'
 import BenefitsSection from '../components/home/BenefitsSection'
 import SocialGallerySection from '../components/home/SocialGallerySection'
+import Footer from '../components/common/Footer'
 
 function HomePage() {
   return (
@@ -14,6 +15,7 @@ function HomePage() {
       <FeaturedProducts />
       <BenefitsSection />
       <SocialGallerySection />
+      <Footer />
     </>
   )
 }
