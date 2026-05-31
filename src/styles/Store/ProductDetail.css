@@ -125,7 +125,7 @@
 }
 
 .pdp__desc-body {
-  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.8;
@@ -164,7 +164,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -185,7 +185,7 @@
 }
 
 .pdp-accordion__body p {
-  font-family: 'Poppins', 'Helvetica Neue', sans-serif;
+  font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
   font-size: 13.5px;
   line-height: 1.75;
   color: rgb(100, 98, 105);
@@ -462,4 +462,24 @@
   .pdp__quantity {
     justify-content: center;
   }
+}
+
+/* ── Zoom cursor-tracking (managed by JS in ZoomImage) ──────────── */
+.pdp__main-image img {
+  /* override the CSS hover scale — JS handles transform now */
+  transition:
+    opacity     0.40s cubic-bezier(0.4, 0, 0.2, 1),
+    transform   0.08s ease;   /* snappy follow for cursor tracking */
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+/* Remove the old CSS hover scale so JS takes full control */
+.pdp__main-image:hover img {
+  transform: none; /* JS sets this inline */
+}
+
+/* Switching fade */
+.pdp__main-image img.is-switching {
+  opacity: 0;
 }

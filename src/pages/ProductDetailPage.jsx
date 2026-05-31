@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import '../styles/Store/ProductDetail.css'
 
 // ── Same product data as ProductGrid ─────────────────────────────────────────
-// Extend each product with detail-specific fields (images[], features, description, accordion)
 const PRODUCTS_DETAIL = {
   'dew-veil': {
     id: 'dew-veil',
@@ -263,6 +262,72 @@ function AccordionItem({ title, body }) {
   )
 }
 
+// ── Zoom-on-cursor image component ───────────────────────────────────────────
+const ZOOM_SCALE = 2.2
+
+function ZoomImage({ src, alt }) {
+  const containerRef = useRef(null)
+  const imgRef = useRef(null)
+  const [zoomed, setZoomed] = useState(false)
+  const [switching, setSwitching] = useState(false)
+  const prevSrc = useRef(src)
+
+  // Smooth src transition
+  const handleSrcChange = useCallback(() => {
+    if (prevSrc.current === src) return
+    setSwitching(true)
+    const timer = setTimeout(() => {
+      prevSrc.current = src
+      setSwitching(false)
+    }, 220)
+    return () => clearTimeout(timer)
+  }, [src])
+
+  // Run on every src change
+  useState(() => { handleSrcChange() })
+
+  const moveLens = useCallback((e) => {
+    if (!containerRef.current || !imgRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    // pointer position as % within container
+    const xPct = (e.clientX - rect.left) / rect.width
+    const yPct = (e.clientY - rect.top) / rect.height
+    // translate the image so the hovered spot stays under the cursor
+    const tx = (0.5 - xPct) * (ZOOM_SCALE - 1) * rect.width
+    const ty = (0.5 - yPct) * (ZOOM_SCALE - 1) * rect.height
+    imgRef.current.style.transform = `scale(${ZOOM_SCALE}) translate(${tx / ZOOM_SCALE}px, ${ty / ZOOM_SCALE}px)`
+  }, [])
+
+  const onEnter = useCallback((e) => {
+    setZoomed(true)
+    moveLens(e)
+  }, [moveLens])
+
+  const onLeave = useCallback(() => {
+    setZoomed(false)
+    if (imgRef.current) imgRef.current.style.transform = 'scale(1) translate(0,0)'
+  }, [])
+
+  return (
+    <div
+      ref={containerRef}
+      className="pdp__main-image"
+      style={{ cursor: zoomed ? 'crosshair' : 'zoom-in' }}
+      onMouseEnter={onEnter}
+      onMouseMove={moveLens}
+      onMouseLeave={onLeave}
+    >
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        draggable="false"
+        className={switching ? 'is-switching' : ''}
+      />
+    </div>
+  )
+}
+
 // ── ProductDetailPage ─────────────────────────────────────────────────────────
 function ProductDetailPage() {
   const { id } = useParams()
@@ -294,9 +359,8 @@ function ProductDetailPage() {
         <div className="pdp__left">
           {/* Gallery */}
           <div className="pdp__gallery">
-            <div className="pdp__main-image">
-              <img src={product.images[activeImage]} alt={product.name} draggable="false" />
-            </div>
+            <ZoomImage src={product.images[activeImage]} alt={product.name} />
+
             {product.images.length > 1 && (
               <div className="pdp__thumbs">
                 {product.images.map((src, i) => (
