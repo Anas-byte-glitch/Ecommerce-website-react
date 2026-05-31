@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import '../../styles/Store/Product/ProductGrid.css'
 
@@ -6,6 +7,7 @@ import '../../styles/Store/Product/ProductGrid.css'
 const ALL_PRODUCTS = [
   // Skincare
   {
+    id: 'dew-veil',
     name: 'Dew Veil',
     category: 'Skincare',
     slug: 'skin-care',
@@ -15,6 +17,7 @@ const ALL_PRODUCTS = [
     hoverImage: 'https://framerusercontent.com/images/fXacuOnSiZl87SW3PMsIzbIrU.jpg?width=948&height=1200',
   },
   {
+    id: 'glow-mist',
     name: 'Glow Mist',
     category: 'Skincare',
     slug: 'skin-care',
@@ -24,6 +27,7 @@ const ALL_PRODUCTS = [
     hoverImage: 'https://framerusercontent.com/images/fMJVwxLYgFxdD8t4xEp0RTMSfQ.jpg?width=948&height=1200',
   },
   {
+    id: 'fresh-aura',
     name: 'Fresh Aura',
     category: 'Skincare',
     slug: 'skin-care',
@@ -34,6 +38,7 @@ const ALL_PRODUCTS = [
   },
   // Hair Style
   {
+    id: 'velvet-waves',
     name: 'Velvet Waves',
     category: 'HairStyle',
     slug: 'hair-style',
@@ -43,6 +48,7 @@ const ALL_PRODUCTS = [
     hoverImage: 'https://framerusercontent.com/images/adGLTrJQSug4Xa4K53Jdv9SKY4.jpg?width=948&height=1200',
   },
   {
+    id: 'shine-lock',
     name: 'Shine Lock',
     category: 'HairStyle',
     slug: 'hair-style',
@@ -52,6 +58,7 @@ const ALL_PRODUCTS = [
     hoverImage: 'https://framerusercontent.com/images/adGLTrJQSug4Xa4K53Jdv9SKY4.jpg?width=948&height=1200',
   },
   {
+    id: 'pure-curl',
     name: 'Pure Curl',
     category: 'HairStyle',
     slug: 'hair-style',
@@ -62,6 +69,7 @@ const ALL_PRODUCTS = [
   },
   // Body Wash
   {
+    id: 'soft-bloom',
     name: 'Soft Bloom',
     category: 'BodyWash',
     slug: 'body-wash',
@@ -71,6 +79,7 @@ const ALL_PRODUCTS = [
     hoverImage: 'https://framerusercontent.com/images/fXacuOnSiZl87SW3PMsIzbIrU.jpg?width=948&height=1200',
   },
   {
+    id: 'velvet-skin',
     name: 'Velvet Skin',
     category: 'BodyWash',
     slug: 'body-wash',
@@ -81,6 +90,7 @@ const ALL_PRODUCTS = [
   },
   // Makeup
   {
+    id: 'bare-glow',
     name: 'Bare Glow',
     category: 'Makeup',
     slug: 'makeup',
@@ -93,41 +103,39 @@ const ALL_PRODUCTS = [
 
 const PAGE_SIZE = 6
 
-/**
- * ProductGrid
- * @param {string} category — active filter slug ('all' | 'skin-care' | …)
- */
 function ProductGrid({ category = 'all' }) {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
 
-  // Filter by category
   const filtered = useMemo(() => {
     if (category === 'all') return ALL_PRODUCTS
     return ALL_PRODUCTS.filter((p) => p.slug === category)
   }, [category])
 
-  // Reset visible count when filter changes
   useMemo(() => {
     setVisibleCount(PAGE_SIZE)
   }, [category])
 
-  const visible   = filtered.slice(0, visibleCount)
-  const hasMore   = visibleCount < filtered.length
+  const visible = filtered.slice(0, visibleCount)
+  const hasMore = visibleCount < filtered.length
 
   return (
     <div className="product-grid">
-      {/* Grid */}
       {filtered.length === 0 ? (
         <p className="product-grid__empty">No products found in this category.</p>
       ) : (
         <div className="product-grid__items">
           {visible.map((product) => (
-            <ProductCard key={product.href} product={product} />
+            <Link
+              key={product.id}
+              to={`/shop/${product.id}`}
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+            >
+              <ProductCard product={product} />
+            </Link>
           ))}
         </div>
       )}
 
-      {/* Load more */}
       {hasMore && (
         <div className="product-grid__load-wrap">
           <button
