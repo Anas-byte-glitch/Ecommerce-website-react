@@ -1,8 +1,9 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import '../styles/Store/ProductDetail.css'
 
 // ── Same product data as ProductGrid ─────────────────────────────────────────
+// Extend each product with detail-specific fields (images[], features, description, accordion)
 const PRODUCTS_DETAIL = {
   'dew-veil': {
     id: 'dew-veil',
@@ -262,69 +263,96 @@ function AccordionItem({ title, body }) {
   )
 }
 
-// ── Zoom-on-cursor image component ───────────────────────────────────────────
-const ZOOM_SCALE = 2.2
+// ── Eye icon for quick-view badge ────────────────────────────────────────────
+function EyeIcon() {
+  return (
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+      <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/>
+    </svg>
+  )
+}
 
-function ZoomImage({ src, alt }) {
-  const containerRef = useRef(null)
-  const imgRef = useRef(null)
-  const [zoomed, setZoomed] = useState(false)
-  const [switching, setSwitching] = useState(false)
-  const prevSrc = useRef(src)
+function ArrowRightIcon() {
+  return (
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+      <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
+    </svg>
+  )
+}
 
-  // Smooth src transition
-  const handleSrcChange = useCallback(() => {
-    if (prevSrc.current === src) return
-    setSwitching(true)
-    const timer = setTimeout(() => {
-      prevSrc.current = src
-      setSwitching(false)
-    }, 220)
-    return () => clearTimeout(timer)
-  }, [src])
+// ── Similar Products section ──────────────────────────────────────────────────
+const ALL_PRODUCTS_LIST = Object.values(PRODUCTS_DETAIL)
 
-  // Run on every src change
-  useState(() => { handleSrcChange() })
+function SimilarProducts({ currentId }) {
+  // Get 3 products from same category, excluding current; fallback to other products
+  const current = PRODUCTS_DETAIL[currentId]
+  const similar = ALL_PRODUCTS_LIST
+    .filter((p) => p.id !== currentId && p.category === current?.category)
+    .slice(0, 3)
 
-  const moveLens = useCallback((e) => {
-    if (!containerRef.current || !imgRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
-    // pointer position as % within container
-    const xPct = (e.clientX - rect.left) / rect.width
-    const yPct = (e.clientY - rect.top) / rect.height
-    // translate the image so the hovered spot stays under the cursor
-    const tx = (0.5 - xPct) * (ZOOM_SCALE - 1) * rect.width
-    const ty = (0.5 - yPct) * (ZOOM_SCALE - 1) * rect.height
-    imgRef.current.style.transform = `scale(${ZOOM_SCALE}) translate(${tx / ZOOM_SCALE}px, ${ty / ZOOM_SCALE}px)`
-  }, [])
+  // If not enough from same category, fill with others
+  const others = ALL_PRODUCTS_LIST.filter(
+    (p) => p.id !== currentId && !similar.find((s) => s.id === p.id)
+  )
+  const displayed = [...similar, ...others].slice(0, 3)
 
-  const onEnter = useCallback((e) => {
-    setZoomed(true)
-    moveLens(e)
-  }, [moveLens])
-
-  const onLeave = useCallback(() => {
-    setZoomed(false)
-    if (imgRef.current) imgRef.current.style.transform = 'scale(1) translate(0,0)'
-  }, [])
+  if (displayed.length === 0) return null
 
   return (
-    <div
-      ref={containerRef}
-      className="pdp__main-image"
-      style={{ cursor: zoomed ? 'crosshair' : 'zoom-in' }}
-      onMouseEnter={onEnter}
-      onMouseMove={moveLens}
-      onMouseLeave={onLeave}
-    >
-      <img
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        draggable="false"
-        className={switching ? 'is-switching' : ''}
-      />
-    </div>
+    <section className="pdp-similar">
+      {/* Title */}
+      <div className="pdp-similar__head">
+        <h2 className="pdp-similar__title">Similar Product</h2>
+      </div>
+
+      {/* 3-column grid */}
+      <div className="pdp-similar__grid">
+        {displayed.map((p) => (
+          <Link key={p.id} to={`/shop/${p.id}`} className="pdp-similar__card">
+            {/* Quick-view badge */}
+            <span className="pdp-similar__badge" aria-hidden="true">
+              <EyeIcon />
+            </span>
+
+            {/* Image area */}
+            <span className="pdp-similar__media">
+              <img
+                className="pdp-similar__img pdp-similar__img--main"
+                src={p.images[0]}
+                alt={p.name}
+                loading="lazy"
+              />
+              {p.images[1] && (
+                <img
+                  className="pdp-similar__img pdp-similar__img--hover"
+                  src={p.images[1]}
+                  alt=""
+                  loading="lazy"
+                  aria-hidden="true"
+                />
+              )}
+            </span>
+
+            {/* Text */}
+            <span className="pdp-similar__info">
+              <span className="pdp-similar__text">
+                <span className="pdp-similar__name">{p.name}</span>
+                <span className="pdp-similar__cat">{p.category}</span>
+              </span>
+              <span className="pdp-similar__price">{p.priceLabel}</span>
+            </span>
+          </Link>
+        ))}
+      </div>
+
+      {/* Show More button */}
+      <div className="pdp-similar__footer">
+        <Link to="/shop" className="pdp-similar__show-more">
+          <span>Show More</span>
+          <ArrowRightIcon />
+        </Link>
+      </div>
+    </section>
   )
 }
 
@@ -359,8 +387,9 @@ function ProductDetailPage() {
         <div className="pdp__left">
           {/* Gallery */}
           <div className="pdp__gallery">
-            <ZoomImage src={product.images[activeImage]} alt={product.name} />
-
+            <div className="pdp__main-image">
+              <img src={product.images[activeImage]} alt={product.name} draggable="false" />
+            </div>
             {product.images.length > 1 && (
               <div className="pdp__thumbs">
                 {product.images.map((src, i) => (
@@ -450,6 +479,10 @@ function ProductDetailPage() {
         </div>
 
       </div>
+
+      {/* ── Similar Products ── */}
+      <SimilarProducts currentId={id} />
+
     </div>
   )
 }
