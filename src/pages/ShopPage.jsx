@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import ProductGrid from '../components/shop/ProductGrid'
+import { useState, useEffect } from 'react'
+import { useLocation }         from 'react-router-dom'
+import ProductGrid             from '../components/shop/ProductGrid'
 import '../styles/Store/Shop.css'
 
-// ── Category filter data ─────────────────────────────────────────────────────
 const CATEGORIES = [
   { label: 'All',        slug: 'all' },
   { label: 'Skin Care',  slug: 'skin-care' },
@@ -11,7 +11,6 @@ const CATEGORIES = [
   { label: 'Makeup',     slug: 'makeup' },
 ]
 
-// ── Product List Header ──────────────────────────────────────────────────────
 function ProductListHeader({ activeCategory, onCategoryChange }) {
   return (
     <section className="shop-header">
@@ -44,19 +43,33 @@ function ProductListHeader({ activeCategory, onCategoryChange }) {
   )
 }
 
-// ── ShopPage ─────────────────────────────────────────────────────────────────
 function ShopPage() {
-  const [activeCategory, setActiveCategory] = useState('all')
+  const location = useLocation()
+
+  const [activeCategory, setActiveCategory] = useState(
+    location.state?.category ?? 'all'
+  )
+  const [searchQuery, setSearchQuery] = useState('')
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const q = params.get('search') ?? ''
+    setSearchQuery(q)
+    if (q) setActiveCategory('all')
+  }, [location.search])
 
   return (
     <div className="shop-page">
       <ProductListHeader
         activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
+        onCategoryChange={(slug) => {
+          setActiveCategory(slug)
+          setSearchQuery('')
+        }}
       />
 
       <section className="shop-products">
-        <ProductGrid category={activeCategory} />
+        <ProductGrid category={activeCategory} searchQuery={searchQuery} />
       </section>
     </div>
   )

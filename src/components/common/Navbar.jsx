@@ -1,11 +1,24 @@
 import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import '../../styles/Store/Navbar.css'
 
 const navigationLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Shop', href: '/shop' },
-  { label: 'About Us', href: '/about' },
+  { label: 'Home',       href: '/' },
+  { label: 'Shop',       href: '/shop' },
+  { label: 'About Us',   href: '/about' },
   { label: 'Contact Us', href: '/contact' },
+]
+
+const PRODUCTS = [
+  { name: 'Dew Veil',     id: 'dew-veil' },
+  { name: 'Glow Mist',    id: 'glow-mist' },
+  { name: 'Fresh Aura',   id: 'fresh-aura' },
+  { name: 'Velvet Waves', id: 'velvet-waves' },
+  { name: 'Shine Lock',   id: 'shine-lock' },
+  { name: 'Pure Curl',    id: 'pure-curl' },
+  { name: 'Soft Bloom',   id: 'soft-bloom' },
+  { name: 'Velvet Skin',  id: 'velvet-skin' },
+  { name: 'Bare Glow',    id: 'bare-glow' },
 ]
 
 function SearchIcon() {
@@ -26,113 +39,167 @@ function CartIcon() {
 }
 
 function Navbar({ cartCount = 0 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen,  setIsMenuOpen]  = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
+  const [searchOpen,  setSearchOpen]  = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
 
-  const closeMenu = () => setIsMenuOpen(false)
-  const toggleMenu = () => setIsMenuOpen((currentState) => !currentState)
+  const closeMenu    = () => setIsMenuOpen(false)
+  const toggleMenu   = () => setIsMenuOpen((s) => !s)
+  const openSearch   = () => { setSearchOpen(true); setSearchQuery('') }
+  const closeSearch  = () => { setSearchOpen(false); setSearchQuery('') }
+
+  const suggestions = searchQuery.trim().length > 0
+    ? PRODUCTS.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : []
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const q = searchQuery.trim()
+    if (!q) return
+    navigate(`/shop?search=${encodeURIComponent(q)}`)
+    closeSearch()
+  }
+
+  const handleSuggestion = (id) => {
+    navigate(`/shop/${id}`)
+    closeSearch()
+  }
 
   useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 8)
-    }
-
+    const handleScroll = () => setHasScrolled(window.scrollY > 8)
     handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
-
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
     document.body.classList.toggle('navbar-menu-open', isMenuOpen)
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        closeMenu()
-      }
+    const onKey = (e) => {
+      if (e.key === 'Escape') { closeMenu(); closeSearch() }
     }
-
-    window.addEventListener('keydown', handleKeyDown)
-
+    window.addEventListener('keydown', onKey)
     return () => {
       document.body.classList.remove('navbar-menu-open')
-      window.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('keydown', onKey)
     }
   }, [isMenuOpen])
 
   return (
-    <header className={`navbar ${hasScrolled ? 'navbar--scrolled' : ''}`}>
-      <nav className="navbar__container" aria-label="Primary navigation">
-        <a className="navbar__logo" href="/" aria-label="Bellezza home">
-          <svg className="navbar__brand-mark" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
-            <circle cx="11" cy="11" r="10.35" />
-            <path d="M6.4 11.5c2.4-1.7 4.9-1.7 7.3 0 0.7 0.5 1.4 0.7 2.1 0.6" />
-          </svg>
-          <span>Bellezza</span>
-        </a>
+    <>
+      <header className={`navbar ${hasScrolled ? 'navbar--scrolled' : ''}`}>
+        <nav className="navbar__container" aria-label="Primary navigation">
 
-        <ul className="navbar__links">
-          {navigationLinks.map((link) => (
-            <li key={link.label}>
-              <a className="navbar__link" href={link.href}>
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="navbar__actions" aria-label="Store actions">
-          <button className="navbar__icon-button" type="button" aria-label="Search">
-            <SearchIcon />
-          </button>
-
-          <button className="navbar__icon-button navbar__cart-button" type="button" aria-label={`Cart with ${cartCount} items`}>
-            <CartIcon />
-            <span className="navbar__cart-badge">{cartCount}</span>
-          </button>
-
-          <button
-            className={`navbar__menu-button ${isMenuOpen ? 'navbar__menu-button--active' : ''}`}
-            type="button"
-            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-controls="mobile-menu"
-            aria-expanded={isMenuOpen}
-            onClick={toggleMenu}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-      </nav>
-
-      <div className={`navbar__mobile-menu ${isMenuOpen ? 'navbar__mobile-menu--open' : ''}`} id="mobile-menu">
-        <div className="navbar__mobile-header">
-          <a className="navbar__mobile-logo" href="/" aria-label="Bellezza home" onClick={closeMenu}>
-            <svg className="navbar__brand-mark" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
+          <Link className="navbar__logo" to="/" aria-label="Bellezza home">
+            <svg className="navbar__brand-mark" viewBox="0 0 22 22" aria-hidden="true">
               <circle cx="11" cy="11" r="10.35" />
               <path d="M6.4 11.5c2.4-1.7 4.9-1.7 7.3 0 0.7 0.5 1.4 0.7 2.1 0.6" />
             </svg>
             <span>Bellezza</span>
-          </a>
+          </Link>
 
-          <button className="navbar__mobile-close" type="button" aria-label="Close navigation menu" onClick={closeMenu}>
-            <span />
-            <span />
-          </button>
+          <ul className="navbar__links">
+            {navigationLinks.map((link) => (
+              <li key={link.label}>
+                <Link className="navbar__link" to={link.href}>{link.label}</Link>
+              </li>
+            ))}
+          </ul>
+
+          <div className="navbar__actions">
+            <button className="navbar__icon-button" type="button" aria-label="Open search" onClick={openSearch}>
+              <SearchIcon />
+            </button>
+
+            <Link className="navbar__icon-button navbar__cart-button" to="/cart" aria-label={`Cart with ${cartCount} items`}>
+              <CartIcon />
+              {cartCount > 0 && <span className="navbar__cart-badge">{cartCount}</span>}
+            </Link>
+
+            <button
+              className={`navbar__menu-button ${isMenuOpen ? 'navbar__menu-button--active' : ''}`}
+              type="button"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
+              onClick={toggleMenu}
+            >
+              <span /><span /><span />
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile menu */}
+        <div className={`navbar__mobile-menu ${isMenuOpen ? 'navbar__mobile-menu--open' : ''}`} id="mobile-menu">
+          <div className="navbar__mobile-header">
+            <Link className="navbar__mobile-logo" to="/" onClick={closeMenu}>
+              <svg className="navbar__brand-mark" viewBox="0 0 22 22" aria-hidden="true">
+                <circle cx="11" cy="11" r="10.35" />
+                <path d="M6.4 11.5c2.4-1.7 4.9-1.7 7.3 0 0.7 0.5 1.4 0.7 2.1 0.6" />
+              </svg>
+              <span>Bellezza</span>
+            </Link>
+            <button className="navbar__mobile-close" type="button" aria-label="Close menu" onClick={closeMenu}>
+              <span /><span />
+            </button>
+          </div>
+
+          <ul className="navbar__mobile-links">
+            {navigationLinks.map((link) => (
+              <li key={link.label}>
+                <Link className="navbar__mobile-link" to={link.href} onClick={closeMenu}>
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
+      </header>
 
-        <ul className="navbar__mobile-links">
-          {navigationLinks.map((link) => (
-            <li key={link.label}>
-              <a className="navbar__mobile-link" href={link.href} onClick={closeMenu}>
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </header>
+      {/* ── Search Modal ── */}
+      {searchOpen && (
+        <div className="search-overlay" onClick={closeSearch} aria-modal="true" role="dialog">
+          <div className="search-modal" onClick={(e) => e.stopPropagation()}>
+            <form className="search-modal__form" onSubmit={handleSearch}>
+              <SearchIcon />
+              <input
+                className="search-modal__input"
+                type="search"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                aria-label="Search products"
+              />
+              {searchQuery && (
+                <button type="button" className="search-modal__clear" onClick={() => setSearchQuery('')} aria-label="Clear">
+                  ✕
+                </button>
+              )}
+            </form>
+
+            {suggestions.length > 0 && (
+              <ul className="search-modal__results">
+                {suggestions.map((p) => (
+                  <li key={p.id}>
+                    <button
+                      className="search-modal__result-item"
+                      type="button"
+                      onClick={() => handleSuggestion(p.id)}
+                    >
+                      <span className="search-modal__result-name">{p.name} — Bellezza</span>
+                      <span className="search-modal__result-path">/shop/{p.id}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
