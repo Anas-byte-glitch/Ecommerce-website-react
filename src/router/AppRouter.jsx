@@ -10,7 +10,6 @@ import ProductDetailPage from '../pages/ProductDetailPage'
 import CartPage from '../pages/CartPage'
 import CheckoutPage from '../pages/CheckoutPage'
 import LoginPage from '../pages/LoginPage'
-import RegisterPage from '../pages/RegisterPage'
 import AboutPage from '../pages/AboutPage'
 import ContactPage from '../pages/ContactPage'
 
@@ -36,9 +35,8 @@ function AppRouter() {
           <Route path="/contact"       element={<ContactPage />} />
         </Route>
 
-        ── Auth routes (no layout) ──
+        {/* ── Auth routes (no layout) ── */}
         <Route path="/login"    element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
 
         {/* ── Dashboard routes (Sidebar only, no Navbar/Footer) ── */}
         {/* <Route path="/dashboard" element={<DashboardLayout />}>

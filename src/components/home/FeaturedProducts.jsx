@@ -1,35 +1,36 @@
+import { Link } from 'react-router-dom'
 import '../../styles/Store/FeaturedProducts.css'
 
 const products = [
   {
+    id: 'dew-veil',
     name: 'Dew Veil',
     category: 'Skincare',
     price: '$9.70',
-    href: '/shop/natural-moisturizing-factors-inulin-body-lotion',
     image: 'https://framerusercontent.com/images/pu42oePhPCrNMNhAPwFAosIAZM.jpg?width=948&height=1200',
     hoverImage: 'https://framerusercontent.com/images/fXacuOnSiZl87SW3PMsIzbIrU.jpg?width=948&height=1200',
   },
   {
+    id: 'glow-mist',
     name: 'Glow Mist',
     category: 'Skincare',
     price: 'Starts at $12.10',
-    href: '/shop/multi-peptide',
     image: 'https://framerusercontent.com/images/ruBqvkOTBw4ULr0p23QU8AXyE.jpg?width=948&height=1200',
     hoverImage: 'https://framerusercontent.com/images/fMJVwxLYgFxdD8t4xEp0RTMSfQ.jpg?width=948&height=1200',
   },
   {
+    id: 'fresh-aura',
     name: 'Fresh Aura',
     category: 'Skincare',
     price: 'Starts at $14.10',
-    href: '/shop/100-plant-derived-squalane',
     image: 'https://framerusercontent.com/images/wn5QPBoCqpWzVPt3HWDFO8um4.jpg?width=948&height=1200',
     hoverImage: 'https://framerusercontent.com/images/GpTdbu6M38JpulHz35kFg5pPo1E.jpg?width=948&height=1200',
   },
   {
+    id: 'velvet-waves',
     name: 'Velvet Waves',
     category: 'HairStyle',
     price: 'Starts at $6.10',
-    href: '/shop/volumizing-texturizing-hair-sprays',
     image: 'https://framerusercontent.com/images/RPOWnXMJPVkGAKUCtJi1TCTUvw.jpg?width=948&height=1200',
     hoverImage: 'https://framerusercontent.com/images/adGLTrJQSug4Xa4K53Jdv9SKY4.jpg?width=948&height=1200',
   },
@@ -54,14 +55,18 @@ function FeaturedProducts() {
 
       <div className="featured-products__grid">
         {products.map((product) => (
-          <a className="product-card" href={product.href} key={product.name}>
+          <Link
+            key={product.id}
+            className="product-card"
+            to={`/shop/${product.id}`}
+          >
             <span className="product-card__quick-view" aria-hidden="true">
               <EyeIcon />
             </span>
 
             <span className="product-card__media">
-              <img className="product-card__image product-card__image--main" src={product.image} alt="" />
-              <img className="product-card__image product-card__image--hover" src={product.hoverImage} alt="" />
+              <img className="product-card__image product-card__image--main" src={product.image} alt={product.name} />
+              <img className="product-card__image product-card__image--hover" src={product.hoverImage} alt="" aria-hidden="true" />
             </span>
 
             <span className="product-card__details">
@@ -69,10 +74,9 @@ function FeaturedProducts() {
                 <span className="product-card__name">{product.name}</span>
                 <span className="product-card__category">{product.category}</span>
               </span>
-
               <span className="product-card__price">{product.price}</span>
             </span>
-          </a>
+          </Link>
         ))}
       </div>
     </section>
