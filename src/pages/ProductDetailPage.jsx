@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
+import ProductCard from '../components/shop/ProductCard'
 import '../styles/Store/ProductDetail.css'
 
 // ── Same product data as ProductGrid ─────────────────────────────────────────
@@ -263,21 +265,17 @@ function AccordionItem({ title, body }) {
   )
 }
 
-// ── Eye icon for quick-view badge ────────────────────────────────────────────
-function EyeIcon() {
-  return (
-    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
-      <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/>
-    </svg>
-  )
-}
-
 function ArrowRightIcon() {
   return (
     <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
       <path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/>
     </svg>
   )
+}
+
+function getPriceValue(priceLabel) {
+  const match = String(priceLabel).match(/[\d.]+/)
+  return match ? Number(match[0]) : 0
 }
 
 // ── Similar Products section ──────────────────────────────────────────────────
@@ -308,40 +306,19 @@ function SimilarProducts({ currentId }) {
       {/* 3-column grid */}
       <div className="pdp-similar__grid">
         {displayed.map((p) => (
-          <Link key={p.id} to={`/shop/${p.id}`} className="pdp-similar__card">
-            {/* Quick-view badge */}
-            <span className="pdp-similar__badge" aria-hidden="true">
-              <EyeIcon />
-            </span>
-
-            {/* Image area */}
-            <span className="pdp-similar__media">
-              <img
-                className="pdp-similar__img pdp-similar__img--main"
-                src={p.images[0]}
-                alt={p.name}
-                loading="lazy"
-              />
-              {p.images[1] && (
-                <img
-                  className="pdp-similar__img pdp-similar__img--hover"
-                  src={p.images[1]}
-                  alt=""
-                  loading="lazy"
-                  aria-hidden="true"
-                />
-              )}
-            </span>
-
-            {/* Text */}
-            <span className="pdp-similar__info">
-              <span className="pdp-similar__text">
-                <span className="pdp-similar__name">{p.name}</span>
-                <span className="pdp-similar__cat">{p.category}</span>
-              </span>
-              <span className="pdp-similar__price">{p.priceLabel}</span>
-            </span>
-          </Link>
+          <ProductCard
+            key={p.id}
+            product={{
+              id: p.id,
+              name: p.name,
+              category: p.category,
+              price: getPriceValue(p.priceLabel),
+              priceLabel: p.priceLabel,
+              href: `/shop/${p.id}`,
+              image: p.images[0],
+              hoverImage: p.images[1],
+            }}
+          />
         ))}
       </div>
 
@@ -360,6 +337,7 @@ function SimilarProducts({ currentId }) {
 function ProductDetailPage() {
   const { id } = useParams()
   const product = PRODUCTS_DETAIL[id] || null
+  const { addToCart } = useCart()
 
   const [activeImage, setActiveImage] = useState(0)
   const [quantity, setQuantity]       = useState(1)
@@ -375,6 +353,13 @@ function ProductDetailPage() {
   }
 
   const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: getPriceValue(product.priceLabel),
+      image: product.images[0],
+      quantity,
+    })
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }

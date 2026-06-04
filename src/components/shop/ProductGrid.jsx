@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import ProductCard                       from './ProductCard'
 import '../../styles/Store/Product/ProductGrid.css'
 
@@ -89,7 +89,11 @@ const ALL_PRODUCTS = [
 const PAGE_SIZE = 6
 
 function ProductGrid({ category = 'all', searchQuery = '' }) {
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+  const filterKey = `${category}:${searchQuery}`
+  const [visibleState, setVisibleState] = useState({
+    key: filterKey,
+    count: PAGE_SIZE,
+  })
 
   const filtered = useMemo(() => {
     let list = category === 'all'
@@ -108,10 +112,7 @@ function ProductGrid({ category = 'all', searchQuery = '' }) {
     return list
   }, [category, searchQuery])
 
-  useEffect(() => {
-    setVisibleCount(PAGE_SIZE)
-  }, [category, searchQuery])
-
+  const visibleCount = visibleState.key === filterKey ? visibleState.count : PAGE_SIZE
   const visible  = filtered.slice(0, visibleCount)
   const hasMore  = visibleCount < filtered.length
 
@@ -131,7 +132,7 @@ function ProductGrid({ category = 'all', searchQuery = '' }) {
         <div className="product-grid__load-wrap">
           <button
             className="product-grid__load-btn"
-            onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+            onClick={() => setVisibleState({ key: filterKey, count: visibleCount + PAGE_SIZE })}
           >
             Load More
           </button>
