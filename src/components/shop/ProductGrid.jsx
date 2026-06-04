@@ -1,5 +1,4 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Link }                          from 'react-router-dom'
 import ProductCard                       from './ProductCard'
 import '../../styles/Store/Product/ProductGrid.css'
 
@@ -123,13 +122,7 @@ function ProductGrid({ category = 'all', searchQuery = '' }) {
       ) : (
         <div className="product-grid__items">
           {visible.map((product) => (
-            <Link
-              key={product.id}
-              to={`/shop/${product.id}`}
-              style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-            >
-              <ProductCard product={product} />
-            </Link>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

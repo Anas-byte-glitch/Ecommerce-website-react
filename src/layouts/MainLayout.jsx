@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from '../components/common/Navbar'
 import Footer from '../components/common/Footer'
+import CartDrawer from '../components/cart/CartDrawer'
 
 /**
  * MainLayout
@@ -10,7 +11,8 @@ import Footer from '../components/common/Footer'
 function MainLayout() {
   return (
     <>
-      <Navbar cartCount={0} />
+      <Navbar />
+      <CartDrawer />
 
       {/* Each public page renders here — no page needs its own Navbar/Footer */}
       <main>

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 import '../../styles/Store/Product/ProductCard.css'
 
 function EyeIcon() {
@@ -8,56 +10,68 @@ function EyeIcon() {
   )
 }
 
-/**
- * ProductCard
- * @param {object}  product
- * @param {string}  product.name
- * @param {string}  product.category
- * @param {string}  product.price       — e.g. "$9.70" or "Starts at $12.10"
- * @param {string}  product.href
- * @param {string}  product.image       — main image URL
- * @param {string}  [product.hoverImage] — optional swap image on hover
- */
+function getPriceValue(price) {
+  if (typeof price === 'number') return price
+
+  const match = String(price).match(/[\d.]+/)
+  return match ? Number(match[0]) : 0
+}
+
 function ProductCard({ product }) {
   const { name, category, price, href, image, hoverImage } = product
+  const { addToCart } = useCart()
+  const productHref = href || `/shop/${product.id}`
+  const priceLabel = product.priceLabel || price
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name,
+      price: getPriceValue(price),
+      image,
+    })
+  }
 
   return (
-    <a className="product-card" href={href} aria-label={`${name} – ${price}`}>
-      {/* Quick-view badge */}
-      <span className="product-card__quick-view" aria-hidden="true">
-        <EyeIcon />
-      </span>
+    <article className="product-card">
+      <Link className="product-card__link" to={productHref} aria-label={`${name} - ${priceLabel}`}>
+        <span className="product-card__quick-view" aria-hidden="true">
+          <EyeIcon />
+        </span>
 
-      {/* Image area */}
-      <span className="product-card__media">
-        <img
-          className="product-card__image product-card__image--main"
-          src={image}
-          alt={name}
-          loading="lazy"
-          decoding="async"
-        />
-        {hoverImage && (
+        <span className="product-card__media">
           <img
-            className="product-card__image product-card__image--hover"
-            src={hoverImage}
-            alt=""
+            className="product-card__image product-card__image--main"
+            src={image}
+            alt={name}
             loading="lazy"
             decoding="async"
-            aria-hidden="true"
           />
-        )}
-      </span>
+          {hoverImage && (
+            <img
+              className="product-card__image product-card__image--hover"
+              src={hoverImage}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              aria-hidden="true"
+            />
+          )}
+        </span>
+      </Link>
 
-      {/* Text details */}
-      <span className="product-card__details">
+      <div className="product-card__details">
         <span className="product-card__copy">
           <span className="product-card__name">{name}</span>
           <span className="product-card__category">{category}</span>
         </span>
-        <span className="product-card__price">{price}</span>
-      </span>
-    </a>
+        <span className="product-card__price">{priceLabel}</span>
+      </div>
+
+      <button className="product-card__cart-button" type="button" onClick={handleAddToCart}>
+        Add to Cart
+      </button>
+    </article>
   )
 }
 

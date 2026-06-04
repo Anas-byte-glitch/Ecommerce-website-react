@@ -1,5 +1,6 @@
 import './App.css'
 import AppRouter from './router/AppRouter'
+import { CartProvider } from './context/CartContext'
 
 /**
  * App
@@ -7,7 +8,11 @@ import AppRouter from './router/AppRouter'
  * All layout and routing logic lives in AppRouter.
  */
 function App() {
-  return <AppRouter />
+  return (
+    <CartProvider>
+      <AppRouter />
+    </CartProvider>
+  )
 }
 
 export default App

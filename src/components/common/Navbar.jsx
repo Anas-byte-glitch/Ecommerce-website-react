@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 import '../../styles/Store/Navbar.css'
 
 const navigationLinks = [
@@ -38,11 +39,12 @@ function CartIcon() {
   )
 }
 
-function Navbar({ cartCount = 0 }) {
+function Navbar() {
   const [isMenuOpen,  setIsMenuOpen]  = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
   const [searchOpen,  setSearchOpen]  = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const { cartCount, openCart } = useCart()
   const navigate = useNavigate()
 
   const closeMenu    = () => setIsMenuOpen(false)
@@ -114,10 +116,10 @@ function Navbar({ cartCount = 0 }) {
               <SearchIcon />
             </button>
 
-            <Link className="navbar__icon-button navbar__cart-button" to="/cart" aria-label={`Cart with ${cartCount} items`}>
+            <button className="navbar__icon-button navbar__cart-button" type="button" onClick={openCart} aria-label={`Open cart with ${cartCount} items`}>
               <CartIcon />
               {cartCount > 0 && <span className="navbar__cart-badge">{cartCount}</span>}
-            </Link>
+            </button>
 
             <button
               className={`navbar__menu-button ${isMenuOpen ? 'navbar__menu-button--active' : ''}`}
