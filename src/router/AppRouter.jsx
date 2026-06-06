@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import MainLayout from '../layouts/MainLayout'
-// import DashboardLayout from '../layouts/DashboardLayout'
+import DashboardLayout from '../layouts/DashboardLayout'
 
 // Public pages
 import HomePage from '../pages/HomePage'
@@ -14,10 +14,10 @@ import AboutPage from '../pages/AboutPage'
 import ContactPage from '../pages/ContactPage'
 
 // Dashboard pages
-// import DashboardOverviewPage from '../pages/dashboard/DashboardOverviewPage'
-// import ProductsManagementPage from '../pages/dashboard/ProductsManagementPage'
-// import OrdersManagementPage from '../pages/dashboard/OrdersManagementPage'
-// import CustomersPage from '../pages/dashboard/CustomersPage'
+import DashboardOverviewPage from '../pages/dashboard/DashboardOverviewPage'
+import ProductsManagementPage from '../pages/dashboard/ProductsManagementPage'
+import OrdersManagementPage from '../pages/dashboard/OrdersManagementPage'
+import CustomersPage from '../pages/dashboard/CustomersPage'
 
 function AppRouter() {
   return (
@@ -36,16 +36,16 @@ function AppRouter() {
         </Route>
 
         {/* ── Auth routes (no layout) ── */}
-        <Route path="/login"    element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
         {/* ── Dashboard routes (Sidebar only, no Navbar/Footer) ── */}
-        {/* <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Navigate to="overview" replace />} />
           <Route path="overview"  element={<DashboardOverviewPage />} />
           <Route path="products"  element={<ProductsManagementPage />} />
           <Route path="orders"    element={<OrdersManagementPage />} />
           <Route path="customers" element={<CustomersPage />} />
-        </Route> */}
+        </Route>
 
         {/* ── 404 fallback ── */}
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}

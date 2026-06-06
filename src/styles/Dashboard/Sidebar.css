@@ -1,0 +1,225 @@
+/* ── src/styles/dashboard/Sidebar.css ── */
+
+.sidebar {
+  --sb-bg:          #ffffff;
+  --sb-border:      #ece8e1;
+  --sb-brand:       #1c1917;
+  --sb-text-muted:  #78716c;
+  --sb-text:        #292524;
+  --sb-active-bg:   #fdf6ec;
+  --sb-active-text: #1c1917;
+  --sb-accent:      #b8873f;
+  --sb-hover-bg:    #faf7f3;
+  --sb-radius:      9px;
+  --sb-width:       235px;
+}
+
+/* ── Shell ── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sb-width);
+  height: 100vh;
+  background: var(--sb-bg);
+  border-right: 1px solid var(--sb-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+/* ── Brand ── */
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 22px 18px;
+  border-bottom: 1px solid var(--sb-border);
+}
+
+.sidebar__brand-logo {
+  width: 36px;
+  height: 36px;
+  background: var(--sb-brand);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.sidebar__brand-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--sb-brand);
+  letter-spacing: 0.4px;
+  /* ✅ خط واضح بدون serif */
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ── Section Label ── */
+.sidebar__section-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  /* ✅ لون أغمق للوضوح */
+  color: #a8a29e;
+  padding: 16px 18px 6px;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* ── Nav ── */
+.sidebar__nav {
+  padding: 4px 10px;
+  overflow-y: auto;
+}
+
+.sidebar__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ── Links ── */
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  color: var(--sb-text);
+  text-decoration: none;
+  /* ✅ حجم خط أكبر و font-weight أثقل */
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--sb-radius);
+  transition: background 0.15s ease, color 0.15s ease;
+  position: relative;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sidebar__link:hover {
+  background: var(--sb-hover-bg);
+  color: var(--sb-brand);
+}
+
+.sidebar__link--active {
+  background: var(--sb-active-bg);
+  color: var(--sb-active-text);
+  font-weight: 700;
+}
+
+.sidebar__link--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--sb-accent);
+  border-radius: 0 3px 3px 0;
+}
+
+.sidebar__link--active .sidebar__icon {
+  color: var(--sb-accent);
+}
+
+/* ── Icon ── */
+.sidebar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+  /* ✅ أيقونات أوضح */
+  color: #78716c;
+  transition: color 0.15s ease;
+}
+
+.sidebar__link:hover .sidebar__icon {
+  color: var(--sb-accent);
+}
+
+.sidebar__label {
+  flex: 1;
+}
+
+/* ── Store Section ── */
+.sidebar__store-section {
+  margin-top: auto;
+  padding: 0 10px 8px;
+  border-top: 1px solid var(--sb-border);
+}
+
+.sidebar__store-link {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  color: var(--sb-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--sb-radius);
+  transition: background 0.15s ease, color 0.15s ease;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  margin-top: 8px;
+}
+
+.sidebar__store-link:hover {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.sidebar__store-link:hover .sidebar__icon {
+  color: #16a34a;
+}
+
+.sidebar__external {
+  margin-left: auto;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+
+.sidebar__store-link:hover .sidebar__external {
+  opacity: 0.8;
+}
+
+/* ── Footer ── */
+.sidebar__footer {
+  padding: 10px;
+  border-top: 1px solid var(--sb-border);
+}
+
+.sidebar__logout {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--sb-radius);
+  color: #78716c;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.15s ease, color 0.15s ease;
+  text-align: left;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.sidebar__logout:hover {
+  background: #fff1f1;
+  color: #dc2626;
+}
+
+.sidebar__logout:hover .sidebar__icon {
+  color: #dc2626;
+}
