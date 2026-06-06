@@ -1,0 +1,24 @@
+/* src/styles/dashboard/DashboardLayout.css */
+
+.dashboard-shell {
+  display: flex;
+  min-height: 100vh;
+  background: #faf7f3;
+}
+
+.dashboard-content {
+  margin-left: 235px; /* نفس عرض الـ Sidebar */
+  flex: 1;
+  min-height: 100vh;
+  padding: 32px 28px;
+  box-sizing: border-box;
+  max-width: calc(100vw - 235px);
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    margin-left: 0;
+    max-width: 100vw;
+    padding: 20px 16px;
+  }
+}

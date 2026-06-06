@@ -1,0 +1,146 @@
+.top-products {
+  background: #ffffff;
+  border: 1px solid #ece8e1;
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.top-products__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f0ede8;
+  direction: rtl;
+}
+
+.top-products__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1c1917;
+  margin: 0 0 3px;
+}
+
+.top-products__sub {
+  font-size: 12px;
+  color: #a8a29e;
+  margin: 0;
+}
+
+.top-products__btn {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #b8873f;
+  background: #fdf6ec;
+  border: 1px solid #f0e0c0;
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.top-products__btn:hover {
+  background: #f5e8cc;
+}
+
+/* ── Table ── */
+.top-products__table-wrap {
+  overflow-x: auto;
+}
+
+.top-products__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: right;
+  direction: rtl;
+  font-size: 13.5px;
+}
+
+.top-products__table thead tr {
+  background: #faf7f3;
+}
+
+.top-products__table th {
+  padding: 11px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #a8a29e;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid #f0ede8;
+  white-space: nowrap;
+}
+
+.top-products__table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #faf7f3;
+  color: #292524;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+.top-products__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.top-products__table tbody tr:hover td {
+  background: #fdf8f2;
+}
+
+/* ── Rank ── */
+.rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #f5f0ea;
+  color: #78716c;
+}
+
+.rank--top {
+  background: #fdf6ec;
+  color: #b8873f;
+}
+
+/* ── Cells ── */
+.top-products__name {
+  font-weight: 600 !important;
+  color: #1c1917 !important;
+}
+
+.top-products__cat {
+  font-size: 12.5px !important;
+  color: #78716c !important;
+}
+
+.top-products__sold {
+  font-weight: 600 !important;
+  color: #44403c !important;
+}
+
+.top-products__revenue {
+  font-weight: 700 !important;
+  color: #1c1917 !important;
+  direction: ltr;
+  text-align: right;
+}
+
+/* ── Stock badges ── */
+.stock {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stock--in  { background: #f0fdf4; color: #16a34a; }
+.stock--low { background: #fffbeb; color: #d97706; }
+.stock--out { background: #fff1f2; color: #dc2626; }
