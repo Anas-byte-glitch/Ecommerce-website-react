@@ -1,0 +1,223 @@
+/* ─────────────────────────────────────────
+   ProductFormModal.css
+   ───────────────────────────────────────── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: overlay-in 0.2s ease;
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(16px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+.product-modal {
+  background: #fff;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  direction: rtl;
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  animation: modal-in 0.22s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+
+/* ── Header ── */
+.product-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid #f0ede8;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+.product-modal__title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1c1917;
+  margin: 0;
+}
+
+.product-modal__close {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  background: #f5f0ea;
+  color: #78716c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.product-modal__close:hover { background: #ece8e1; color: #1c1917; }
+
+/* ── Body ── */
+.product-modal__body {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── Image Section ── */
+.product-modal__image-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #faf7f3;
+  border-radius: 12px;
+  border: 1px solid #f0ede8;
+}
+
+.product-modal__image-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ece8e1;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.product-modal__image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-modal__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d4c5b0;
+}
+
+.product-modal__image-input-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* ── Fields ── */
+.product-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.product-modal__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #44403c;
+}
+
+.product-modal__required { color: #dc2626; }
+
+.product-modal__input,
+.product-modal__select {
+  padding: 10px 14px;
+  border: 1px solid #e5e0d8;
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: #1c1917;
+  background: #fff;
+  outline: none;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  direction: rtl;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.product-modal__input:focus,
+.product-modal__select:focus {
+  border-color: #b8873f;
+  box-shadow: 0 0 0 3px rgba(184,135,63,0.12);
+}
+
+.product-modal__input--error {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220,38,38,0.1) !important;
+}
+
+.product-modal__hint {
+  font-size: 11.5px;
+  color: #a8a29e;
+}
+
+.product-modal__error {
+  font-size: 12px;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ── Input with suffix ── */
+.product-modal__input-group {
+  position: relative;
+}
+
+.product-modal__input-group .product-modal__input {
+  padding-left: 42px;
+}
+
+.product-modal__input-suffix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: #b8873f;
+  pointer-events: none;
+}
+
+/* ── Row ── */
+.product-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  direction: ltr;
+}
+
+.product-modal__row .product-modal__field {
+  direction: rtl;
+}
+
+/* ── Footer ── */
+.product-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 18px 24px;
+  border-top: 1px solid #f0ede8;
+  background: #faf7f3;
+  border-radius: 0 0 18px 18px;
+}
