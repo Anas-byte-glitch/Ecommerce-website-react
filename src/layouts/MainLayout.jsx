@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import Navbar from '../components/common/Navbar'
 import Footer from '../components/common/Footer'
 import CartDrawer from '../components/cart/CartDrawer'
+import ScrollToTop from '../components/common/ScrollToTop'
 
 function MainLayout() {
 
@@ -30,6 +31,8 @@ function MainLayout() {
 
   return (
     <>
+      <ScrollToTop />
+      
       <Navbar />
       <CartDrawer />
 
