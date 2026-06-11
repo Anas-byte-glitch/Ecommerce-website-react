@@ -17,7 +17,6 @@ import ContactPage from '../pages/ContactPage'
 import DashboardOverviewPage from '../pages/dashboard/DashboardOverviewPage'
 import ProductsManagementPage from '../pages/dashboard/ProductsManagementPage'
 import OrdersManagementPage from '../pages/dashboard/OrdersManagementPage'
-import CustomersPage from '../pages/dashboard/CustomersPage'
 
 function AppRouter() {
   return (
@@ -44,7 +43,6 @@ function AppRouter() {
           <Route path="overview"  element={<DashboardOverviewPage />} />
           <Route path="products"  element={<ProductsManagementPage />} />
           <Route path="orders"    element={<OrdersManagementPage />} />
-          <Route path="customers" element={<CustomersPage />} />
         </Route>
 
         {/* ── 404 fallback ── */}

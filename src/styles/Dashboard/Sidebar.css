@@ -1,5 +1,6 @@
-/* ── src/styles/dashboard/Sidebar.css ── */
+/* ── src/styles/Dashboard/Sidebar.css ── */
 
+/* ── Design Tokens ── */
 .sidebar {
   --sb-bg:          #ffffff;
   --sb-border:      #ece8e1;
@@ -11,10 +12,62 @@
   --sb-accent:      #b8873f;
   --sb-hover-bg:    #faf7f3;
   --sb-radius:      9px;
-  --sb-width:       235px;
+  --sb-width:       240px;
+  --sb-collapsed-width: 68px;
+  --sb-transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Shell ── */
+
+/* ════════════════════════════════════════
+   OVERLAY
+   ════════════════════════════════════════ */
+.sidebar__overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity var(--sb-transition);
+}
+
+.sidebar__overlay.active {
+  opacity: 1;
+}
+
+
+/* ════════════════════════════════════════
+   TOGGLE BUTTON  (hidden on desktop)
+   ════════════════════════════════════════ */
+.sidebar__toggle {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #ece8e1;
+  border-radius: 9px;
+  cursor: pointer;
+  color: #1c1917;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: background var(--sb-transition), box-shadow var(--sb-transition);
+}
+
+.sidebar__toggle:hover {
+  background: #faf7f3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ════════════════════════════════════════
+   SIDEBAR SHELL
+   ════════════════════════════════════════ */
 .sidebar {
   position: fixed;
   top: 0;
@@ -26,20 +79,30 @@
   display: flex;
   flex-direction: column;
   z-index: 100;
+  transition: transform var(--sb-transition), width var(--sb-transition);
+  will-change: transform;
+  overflow: hidden;
 }
 
-/* ── Brand ── */
+
+/* ════════════════════════════════════════
+   BRAND
+   ════════════════════════════════════════ */
 .sidebar__brand {
   display: flex;
   align-items: center;
   gap: 11px;
   padding: 22px 18px;
   border-bottom: 1px solid var(--sb-border);
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .sidebar__brand-logo {
   width: 36px;
   height: 36px;
+  min-width: 36px;
   background: var(--sb-brand);
   border-radius: 10px;
   display: flex;
@@ -54,27 +117,37 @@
   font-weight: 700;
   color: var(--sb-brand);
   letter-spacing: 0.4px;
-  /* ✅ خط واضح بدون serif */
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  transition: opacity var(--sb-transition);
 }
 
-/* ── Section Label ── */
+
+/* ════════════════════════════════════════
+   SECTION LABEL
+   ════════════════════════════════════════ */
 .sidebar__section-label {
   font-size: 10.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.3px;
-  /* ✅ لون أغمق للوضوح */
   color: #a8a29e;
   padding: 16px 18px 6px;
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity var(--sb-transition);
 }
 
-/* ── Nav ── */
+
+/* ════════════════════════════════════════
+   NAV
+   ════════════════════════════════════════ */
 .sidebar__nav {
   padding: 4px 10px;
   overflow-y: auto;
+  overflow-x: hidden;
+  flex-shrink: 0;
 }
 
 .sidebar__list {
@@ -86,7 +159,10 @@
   gap: 2px;
 }
 
-/* ── Links ── */
+
+/* ════════════════════════════════════════
+   LINKS
+   ════════════════════════════════════════ */
 .sidebar__link {
   display: flex;
   align-items: center;
@@ -94,13 +170,14 @@
   padding: 10px 12px;
   color: var(--sb-text);
   text-decoration: none;
-  /* ✅ حجم خط أكبر و font-weight أثقل */
   font-size: 14px;
   font-weight: 600;
   border-radius: var(--sb-radius);
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--sb-transition), color var(--sb-transition);
   position: relative;
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .sidebar__link:hover {
@@ -130,16 +207,19 @@
   color: var(--sb-accent);
 }
 
-/* ── Icon ── */
+
+/* ════════════════════════════════════════
+   ICON & LABEL
+   ════════════════════════════════════════ */
 .sidebar__icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 20px;
+  min-width: 20px;
   flex-shrink: 0;
-  /* ✅ أيقونات أوضح */
   color: #78716c;
-  transition: color 0.15s ease;
+  transition: color var(--sb-transition);
 }
 
 .sidebar__link:hover .sidebar__icon {
@@ -148,13 +228,20 @@
 
 .sidebar__label {
   flex: 1;
+  transition: opacity var(--sb-transition);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ── Store Section ── */
+
+/* ════════════════════════════════════════
+   STORE SECTION
+   ════════════════════════════════════════ */
 .sidebar__store-section {
   margin-top: auto;
   padding: 0 10px 8px;
   border-top: 1px solid var(--sb-border);
+  overflow: hidden;
 }
 
 .sidebar__store-link {
@@ -167,9 +254,11 @@
   font-size: 14px;
   font-weight: 600;
   border-radius: var(--sb-radius);
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--sb-transition), color var(--sb-transition);
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .sidebar__store-link:hover {
@@ -185,16 +274,22 @@
   margin-left: auto;
   opacity: 0.45;
   flex-shrink: 0;
+  transition: opacity var(--sb-transition);
 }
 
 .sidebar__store-link:hover .sidebar__external {
   opacity: 0.8;
 }
 
-/* ── Footer ── */
+
+/* ════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════ */
 .sidebar__footer {
   padding: 10px;
   border-top: 1px solid var(--sb-border);
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .sidebar__logout {
@@ -210,9 +305,11 @@
   color: #78716c;
   font-size: 14px;
   font-weight: 600;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background var(--sb-transition), color var(--sb-transition);
   text-align: left;
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .sidebar__logout:hover {
@@ -222,4 +319,236 @@
 
 .sidebar__logout:hover .sidebar__icon {
   color: #dc2626;
+}
+
+
+/* ════════════════════════════════════════
+   TABLET  (≤ 1024px) — collapsed icon rail
+   ════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: var(--sb-collapsed-width);
+  }
+
+  .sidebar__brand {
+    padding: 22px 0;
+    justify-content: center;
+  }
+
+  .sidebar__brand-name {
+    display: none;
+  }
+
+  .sidebar__section-label {
+    opacity: 0;
+    pointer-events: none;
+    padding: 16px 0 6px;
+  }
+
+  .sidebar__nav {
+    padding: 4px 6px;
+  }
+
+  .sidebar__link {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .sidebar__link .sidebar__label {
+    display: none;
+  }
+
+  .sidebar__store-section {
+    padding: 0 6px 8px;
+  }
+
+  .sidebar__store-link {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .sidebar__store-link .sidebar__label,
+  .sidebar__external {
+    display: none;
+  }
+
+  .sidebar__footer {
+    padding: 10px 6px;
+  }
+
+  .sidebar__logout {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .sidebar__logout .sidebar__label {
+    display: none;
+  }
+
+  /* When opened on tablet (via toggle), show full sidebar */
+  .sidebar.open {
+    width: var(--sb-width);
+  }
+
+  .sidebar.open .sidebar__brand {
+    padding: 22px 18px;
+    justify-content: flex-start;
+  }
+
+  .sidebar.open .sidebar__brand-name {
+    display: block;
+  }
+
+  .sidebar.open .sidebar__section-label {
+    opacity: 1;
+    pointer-events: auto;
+    padding: 16px 18px 6px;
+  }
+
+  .sidebar.open .sidebar__nav {
+    padding: 4px 10px;
+  }
+
+  .sidebar.open .sidebar__link {
+    justify-content: flex-start;
+    padding: 10px 12px;
+  }
+
+  .sidebar.open .sidebar__link .sidebar__label {
+    display: block;
+  }
+
+  .sidebar.open .sidebar__store-section {
+    padding: 0 10px 8px;
+  }
+
+  .sidebar.open .sidebar__store-link {
+    justify-content: flex-start;
+    padding: 10px 12px;
+  }
+
+  .sidebar.open .sidebar__store-link .sidebar__label,
+  .sidebar.open .sidebar__external {
+    display: block;
+  }
+
+  .sidebar.open .sidebar__footer {
+    padding: 10px;
+  }
+
+  .sidebar.open .sidebar__logout {
+    justify-content: flex-start;
+    padding: 10px 12px;
+  }
+
+  .sidebar.open .sidebar__logout .sidebar__label {
+    display: block;
+  }
+}
+
+
+/* ════════════════════════════════════════
+   MOBILE  (≤ 768px) — hidden, slides in
+   ════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Show the toggle button */
+  .sidebar__toggle {
+    display: flex;
+  }
+
+  /* Show the overlay */
+  .sidebar__overlay {
+    display: block;
+  }
+
+  /* Sidebar hidden off-screen by default */
+  .sidebar {
+    width: var(--sb-width);
+    transform: translateX(-100%);
+    box-shadow: none;
+    /* Override tablet collapsed styles */
+    justify-content: flex-start;
+  }
+
+  /* Restore all labels/names to full visible state */
+  .sidebar__brand {
+    padding: 22px 18px;
+    justify-content: flex-start;
+  }
+
+  .sidebar__brand-name {
+    display: block !important;
+  }
+
+  .sidebar__section-label {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    padding: 16px 18px 6px !important;
+  }
+
+  .sidebar__nav {
+    padding: 4px 10px !important;
+  }
+
+  .sidebar__link {
+    justify-content: flex-start !important;
+    padding: 10px 12px !important;
+  }
+
+  .sidebar__link .sidebar__label {
+    display: block !important;
+  }
+
+  .sidebar__store-section {
+    padding: 0 10px 8px !important;
+  }
+
+  .sidebar__store-link {
+    justify-content: flex-start !important;
+    padding: 10px 12px !important;
+  }
+
+  .sidebar__store-link .sidebar__label,
+  .sidebar__external {
+    display: block !important;
+  }
+
+  .sidebar__footer {
+    padding: 10px !important;
+  }
+
+  .sidebar__logout {
+    justify-content: flex-start !important;
+    padding: 10px 12px !important;
+  }
+
+  .sidebar__logout .sidebar__label {
+    display: block !important;
+  }
+
+  /* Slide in when open */
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(28, 25, 23, 0.12);
+  }
+}
+
+
+/* ════════════════════════════════════════
+   REDUCED MOTION
+   ════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .sidebar__toggle,
+  .sidebar__overlay,
+  .sidebar__link,
+  .sidebar__store-link,
+  .sidebar__logout,
+  .sidebar__icon,
+  .sidebar__label,
+  .sidebar__brand-name,
+  .sidebar__section-label,
+  .sidebar__external {
+    transition: none !important;
+  }
 }

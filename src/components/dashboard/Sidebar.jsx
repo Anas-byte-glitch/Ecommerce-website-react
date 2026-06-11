@@ -1,5 +1,6 @@
 // src/components/dashboard/Sidebar.jsx
 
+import { useState, useEffect, useCallback } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import '../../styles/Dashboard/Sidebar.css'
 
@@ -40,73 +41,125 @@ const Icons = {
       <line x1="21" y1="12" x2="9" y2="12"/>
     </svg>
   ),
+  Hamburger: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="3" y1="6"  x2="21" y2="6"/>
+      <line x1="3" y1="12" x2="21" y2="12"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  ),
+  Close: () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/>
+      <line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  ),
 }
 
 const navItems = [
-  { to: '/dashboard/overview',  label: 'Overview',   Icon: Icons.Overview  },
-  { to: '/dashboard/products',  label: 'Products',   Icon: Icons.Products  },
-  { to: '/dashboard/orders',    label: 'Orders',     Icon: Icons.Orders    }
+  { to: '/dashboard/overview', label: 'Overview', Icon: Icons.Overview },
+  { to: '/dashboard/products', label: 'Products', Icon: Icons.Products },
+  { to: '/dashboard/orders',   label: 'Orders',   Icon: Icons.Orders   },
 ]
 
 function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const toggleSidebar = useCallback(() => setIsOpen(prev => !prev), [])
+  const closeSidebar  = useCallback(() => setIsOpen(false), [])
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') closeSidebar() }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [closeSidebar])
+
+  // Lock body scroll when sidebar is open on mobile
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [isOpen])
+
   return (
-    <aside className="sidebar">
+    <>
+      {/* ── Mobile / Tablet Toggle Button ── */}
+      <button
+        className="sidebar__toggle"
+        onClick={toggleSidebar}
+        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={isOpen}
+      >
+        {isOpen ? <Icons.Close /> : <Icons.Hamburger />}
+      </button>
 
-      {/* Brand */}
-      <div className="sidebar__brand">
-        <div className="sidebar__brand-logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="currentColor"/>
-            <path d="M2 17l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
-            <path d="M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
-          </svg>
+      {/* ── Overlay ── */}
+      <div
+        className={`sidebar__overlay${isOpen ? ' active' : ''}`}
+        onClick={closeSidebar}
+        aria-hidden="true"
+      />
+
+      {/* ── Sidebar ── */}
+      <aside className={`sidebar${isOpen ? ' open' : ''}`}>
+
+        {/* Brand */}
+        <div className="sidebar__brand">
+          <div className="sidebar__brand-logo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="currentColor"/>
+              <path d="M2 17l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+              <path d="M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <span className="sidebar__brand-name">Bellezza</span>
         </div>
-        <span className="sidebar__brand-name">Bellezza</span>
-      </div>
 
-      {/* Main Nav */}
-      <p className="sidebar__section-label">Main Menu</p>
-      <nav className="sidebar__nav">
-        <ul className="sidebar__list">
-          {navItems.map(({ to, label, Icon }) => (
-            <li key={to} className="sidebar__item">
-              <NavLink
-                to={to}
-                className={({ isActive }) =>
-                  `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
-                }
-              >
-                <span className="sidebar__icon"><Icon /></span>
-                <span className="sidebar__label">{label}</span>
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
+        {/* Main Nav */}
+        <p className="sidebar__section-label">Main Menu</p>
+        <nav className="sidebar__nav">
+          <ul className="sidebar__list">
+            {navItems.map(({ to, label, Icon }) => (
+              <li key={to} className="sidebar__item">
+                <NavLink
+                  to={to}
+                  className={({ isActive }) =>
+                    `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+                  }
+                  onClick={closeSidebar}
+                >
+                  <span className="sidebar__icon"><Icon /></span>
+                  <span className="sidebar__label">{label}</span>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-      {/* Store Link */}
-      <div className="sidebar__store-section">
-        <p className="sidebar__section-label">Store</p>
-        <Link to="/" className="sidebar__store-link">
-          <span className="sidebar__icon"><Icons.Store /></span>
-          <span className="sidebar__label">Visit Website</span>
-          <svg className="sidebar__external" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15,3 21,3 21,9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-        </Link>
-      </div>
+        {/* Store Link */}
+        <div className="sidebar__store-section">
+          <p className="sidebar__section-label">Store</p>
+          <Link to="/" className="sidebar__store-link" onClick={closeSidebar}>
+            <span className="sidebar__icon"><Icons.Store /></span>
+            <span className="sidebar__label">Visit Website</span>
+            <svg className="sidebar__external" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15,3 21,3 21,9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </Link>
+        </div>
 
-      {/* Footer */}
-      <div className="sidebar__footer">
-        <button className="sidebar__logout">
-          <span className="sidebar__icon"><Icons.Logout /></span>
-          <span className="sidebar__label">Log out</span>
-        </button>
-      </div>
+        {/* Footer */}
+        <div className="sidebar__footer">
+          <button className="sidebar__logout">
+            <span className="sidebar__icon"><Icons.Logout /></span>
+            <span className="sidebar__label">Log out</span>
+          </button>
+        </div>
 
-    </aside>
+      </aside>
+    </>
   )
 }
 

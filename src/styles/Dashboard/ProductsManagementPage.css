@@ -401,3 +401,173 @@
   gap: 10px;
   justify-content: center;
 }
+
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+
+/* ── Tablet landscape (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .products-page__title {
+    font-size: 20px;
+  }
+
+  .products-table th,
+  .products-table td {
+    padding: 11px 16px;
+  }
+
+  .search-box {
+    max-width: 260px;
+  }
+}
+
+/* ── Tablet portrait (≤ 900px) ── */
+@media (max-width: 900px) {
+  /* Hide Category column */
+  .products-table th:nth-child(3),
+  .products-table td:nth-child(3) {
+    display: none;
+  }
+
+  /* Shrink action buttons to icon-only */
+  .action-btn span:not(.action-btn__icon) {
+    display: none;
+  }
+
+  .action-btn {
+    padding: 7px 9px;
+  }
+}
+
+/* ── Mobile large (≤ 768px) ── */
+@media (max-width: 768px) {
+  .products-page {
+    gap: 14px;
+    padding-top: 60px; /* offset for toggle button */
+  }
+
+  .products-page__header {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .products-page__title {
+    font-size: 18px;
+  }
+
+  /* Summary cards: equal width filling the row */
+  .products-page__summary {
+    gap: 10px;
+  }
+
+  .summary-card {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    align-items: center;
+  }
+
+  .summary-card__value {
+    font-size: 20px;
+  }
+
+  /* Toolbar stacks */
+  .products-page__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    padding-bottom: 2px;
+    gap: 6px;
+    /* hide scrollbar but keep scroll */
+    scrollbar-width: none;
+  }
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-tab {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    font-size: 12.5px;
+  }
+
+  /* Table: horizontal scroll */
+  .products-table-wrap {
+    overflow-x: auto;
+    border-radius: 14px;
+  }
+
+  .products-table {
+    min-width: 520px;
+  }
+
+  /* Confirm modal full-width on mobile */
+  .confirm-modal {
+    max-width: 100%;
+    padding: 24px 20px 20px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .confirm-modal__actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .confirm-modal__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── Mobile small (≤ 560px) ── */
+@media (max-width: 560px) {
+  /* Hide Status column — keep Product, Price, Stock, Actions */
+  .products-table th:nth-child(5),
+  .products-table td:nth-child(5) {
+    display: none;
+  }
+
+  .products-table {
+    min-width: 420px;
+  }
+
+  .products-table th,
+  .products-table td {
+    padding: 10px 12px;
+    font-size: 12.5px;
+  }
+
+  .product-cell__img-wrap {
+    width: 36px;
+    height: 36px;
+  }
+
+  .product-cell__name {
+    font-size: 12.5px;
+  }
+
+  .summary-card__value {
+    font-size: 18px;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .action-btn,
+  .filter-tab,
+  .btn,
+  .search-box,
+  .products-table tbody tr:hover td {
+    transition: none;
+  }
+}

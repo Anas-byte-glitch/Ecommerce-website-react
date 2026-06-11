@@ -1,3 +1,7 @@
+/* ─────────────────────────────────────────
+   TopProducts.css
+   ───────────────────────────────────────── */
+
 .top-products {
   background: #ffffff;
   border: 1px solid #ece8e1;
@@ -39,6 +43,8 @@
   cursor: pointer;
   transition: background 0.15s;
   font-family: 'Segoe UI', Arial, sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .top-products__btn:hover {
@@ -144,3 +150,103 @@
 .stock--in  { background: #f0fdf4; color: #16a34a; }
 .stock--low { background: #fffbeb; color: #d97706; }
 .stock--out { background: #fff1f2; color: #dc2626; }
+
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+
+/* ── Tablet (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .top-products__header {
+    padding: 16px 20px;
+  }
+
+  .top-products__table th,
+  .top-products__table td {
+    padding: 12px 16px;
+  }
+
+  .top-products__table {
+    font-size: 13px;
+  }
+}
+
+/* ── Mobile large (≤ 768px) ── */
+@media (max-width: 768px) {
+  .top-products__header {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-products__title {
+    font-size: 14px;
+  }
+
+  .top-products__btn {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+
+  /* Hide Category column */
+  .top-products__table th:nth-child(3),
+  .top-products__table td:nth-child(3) {
+    display: none;
+  }
+
+  .top-products__table th,
+  .top-products__table td {
+    padding: 11px 12px;
+    font-size: 12.5px;
+  }
+
+  .top-products__cat {
+    display: none;
+  }
+}
+
+/* ── Mobile small (≤ 560px) ── */
+@media (max-width: 560px) {
+  /* Hide Sold column — keep Rank, Name, Revenue, Stock */
+  .top-products__table th:nth-child(4),
+  .top-products__table td:nth-child(4) {
+    display: none;
+  }
+
+  .top-products__table th,
+  .top-products__table td {
+    padding: 10px 10px;
+    font-size: 12px;
+  }
+
+  .top-products__table {
+    font-size: 12px;
+  }
+
+  .rank {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+
+  .stock {
+    padding: 2px 8px;
+    font-size: 11px;
+  }
+
+  .top-products__revenue {
+    font-size: 12px !important;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .top-products__btn {
+    transition: none;
+  }
+
+  .top-products__table tbody tr:hover td {
+    background: transparent;
+  }
+}
