@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { formatPrice } from '../../utils/formatPrice'
-import ProductFormModal from '../../components/Dashboard/ProductFormModal'
+import ProductFormModal from '../../components/dashboard/ProductFormModal'
 import '../../styles/Dashboard/ProductsManagementPage.css'
 
 /* ── Mock Data ── */
