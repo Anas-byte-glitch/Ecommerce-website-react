@@ -1,6 +1,6 @@
-import StatsCard        from '../../components/Dashboard/StatsCard'
-import SalesChart       from '../../components/Dashboard/SalesChart'
-import TopProductsTable from '../../components/Dashboard/TopProductsTable'
+import StatsCard        from '../../components/dashboard/StatsCard'
+import SalesChart       from '../../components/dashboard/SalesChart'
+import TopProductsTable from '../../components/dashboard/TopProductsTable'
 import { formatPrice }  from '../../utils/formatPrice'
 import '../../styles/Dashboard/DashboardOverviewPage.css'
 
