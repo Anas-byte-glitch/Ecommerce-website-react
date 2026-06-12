@@ -1,5 +1,5 @@
 import { formatPrice } from '../../utils/formatPrice'
-import '../../styles/dashboard/TopProductsTable.css'
+import '../../styles/Dashboard/TopProductsTable.css'
 
 const products = [
   {

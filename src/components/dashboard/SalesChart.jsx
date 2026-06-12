@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import '../../styles/dashboard/SalesChart.css'
+import '../../styles/Dashboard/SalesChart.css'
 
 const monthlyData = [
   { month: 'جان', sales: 85000  },

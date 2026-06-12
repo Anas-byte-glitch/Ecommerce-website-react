@@ -1,4 +1,4 @@
-import '../../styles/dashboard/StatsCard.css'
+import '../../styles/Dashboard/StatsCard.css'
 
 // Mini sparkline using SVG
 function Sparkline({ color = '#16a34a', up = true }) {
